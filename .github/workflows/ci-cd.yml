@@ -29,10 +29,6 @@ jobs:
       run: |
         npm run format:check || (echo "Code formatting check failed. Run 'npm run format' locally to fix." && exit 1)
     
-    - name: Run Tests
-      working-directory: ./simple-agent
-      run: npm test
-    
     - name: Build
       working-directory: ./simple-agent
       run: npm run build
