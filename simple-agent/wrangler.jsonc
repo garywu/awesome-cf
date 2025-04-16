@@ -6,7 +6,7 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "simple-agent",
 	"main": "src/index.ts",
-	"compatibility_date": "2025-04-16",
+	"compatibility_date": "2025-03-10",
 	"compatibility_flags": ["nodejs_compat"],
 	"assets": {
 		"binding": "ASSETS",
