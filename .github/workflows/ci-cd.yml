@@ -39,6 +39,12 @@ jobs:
       working-directory: ./simple-agent
       run: npm run build
     
+    # Deploy to Cloudflare Workers using wrangler
+    # This step requires CLOUDFLARE_API_TOKEN with:
+    # - Account > Workers Scripts > Edit
+    # - Account > Workers AI > Edit
+    # - Account > Workers KV Storage > Edit
+    # - Account > Workers Routes > Edit
     - name: Deploy to Cloudflare Workers
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       working-directory: ./simple-agent
