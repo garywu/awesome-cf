@@ -1,0 +1,46 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: './simple-agent/package-lock.json'
+    
+    - name: Install Dependencies
+      working-directory: ./simple-agent
+      run: npm ci
+    
+    - name: Check Code Format
+      working-directory: ./simple-agent
+      run: |
+        npm run format:check || (echo "Code formatting check failed. Run 'npm run format' locally to fix." && exit 1)
+    
+    - name: Run Tests
+      working-directory: ./simple-agent
+      run: npm test
+    
+    - name: Build
+      working-directory: ./simple-agent
+      run: npm run build
+    
+    - name: Deploy to Cloudflare Workers
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      working-directory: ./simple-agent
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      run: npm run deploy 
