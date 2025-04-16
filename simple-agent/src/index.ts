@@ -23,7 +23,7 @@ export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const url = new URL(request.url);
 
-		// --- Route requests for /api --- 
+		// --- Route requests for /api ---
 		if (url.pathname.startsWith('/api')) {
 			console.log(`Handling API request: ${request.url}`);
 			const prompt = url.searchParams.get('prompt');
@@ -34,7 +34,7 @@ export default {
 			try {
 				const messages = [{ role: 'user', content: prompt }];
 				// Use type assertion for non-streaming response
-				const aiResponse = await env.AI.run('@cf/mistral/mistral-7b-instruct-v0.1', { messages }) as { response: string };
+				const aiResponse = (await env.AI.run('@cf/mistral/mistral-7b-instruct-v0.1', { messages })) as { response: string };
 
 				// Now we can safely access aiResponse.response
 				if (aiResponse && typeof aiResponse.response === 'string') {
@@ -43,11 +43,12 @@ export default {
 					console.error('Unexpected AI response structure after type assertion:', aiResponse);
 					return new Response('AI returned an unexpected response format.', { status: 500 });
 				}
-
 			} catch (e: unknown) {
 				console.error('Error processing AI request:', e);
 				let errorMessage = 'Failed to process AI request.';
-				if (e instanceof Error) { errorMessage += ` Error: ${e.message}`; }
+				if (e instanceof Error) {
+					errorMessage += ` Error: ${e.message}`;
+				}
 				return new Response(errorMessage, { status: 500 });
 			}
 		}
@@ -59,7 +60,7 @@ export default {
 			// It will return 404 if the file is not found
 			return await env.ASSETS.fetch(request);
 		} catch (e) {
-			console.error("Error fetching from ASSETS binding:", e);
+			console.error('Error fetching from ASSETS binding:', e);
 			return new Response('Internal Server Error fetching asset', { status: 500 });
 		}
 	},
