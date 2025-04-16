@@ -6,7 +6,6 @@
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
-		"test": "vitest",
 		"cf-typegen": "wrangler types",
 		"build": "wrangler build",
 		"format": "prettier --write .",
@@ -14,10 +13,8 @@
 		"lint": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "^0.7.5",
 		"@cloudflare/workers-types": "^4.20250416.0",
 		"typescript": "^5.5.2",
-		"vitest": "~3.0.7",
 		"wrangler": "^4.11.1",
 		"prettier": "^3.2.5"
 	}
