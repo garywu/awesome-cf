@@ -1,0 +1,33 @@
+name: Deploy Simple Agent Worker
+
+on:
+  push:
+    branches:
+      - main # Or your default branch
+    paths:
+      - 'simple-agent/**' # Only run when files in simple-agent change
+      - '.github/workflows/deploy-simple-agent.yml' # Or when the workflow itself changes
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Simple Agent to Cloudflare Workers
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Or the version your project uses
+
+      - name: Install Dependencies
+        run: cd simple-agent && npm install
+
+      - name: Deploy Worker
+        # Use npx to ensure the latest compatible wrangler is used
+        run: cd simple-agent && npx wrangler@latest deploy
+        env:
+          # These secrets must be configured in GitHub Repository Settings
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }} 
