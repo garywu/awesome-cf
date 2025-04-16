@@ -1,140 +1,54 @@
-# Simple Agent Setup Notes
+# Simple Agent Development Notes
 
-This document details the commands used to set up the `simple-agent` Cloudflare Worker project and the results observed.
+This folder contains a step-by-step guide detailing how to build the `simple-agent` Cloudflare Worker project from scratch, including configuration, security features, testing, and deployment.
 
-## 1. Project Initialization
+## Tutorial Steps
 
-**Command:**
+1.  **[Project Initialization](./01-project-initialization.md)**
+    -   Setting up the basic project structure using Wrangler.
 
-```bash
-# Assumes you are in the desired parent directory for the new project
-npx wrangler@latest init simple-agent --yes
-```
+2.  **[Setting Up Static Assets](./02-static-assets.md)**
+    -   Configuring Wrangler to serve static files (HTML, etc.) from the `public` directory.
+    -   Updating worker code to handle asset requests.
 
-**Explanation:**
-This command uses `npx` to run the latest version of `wrangler`'s `init` command. It creates a new Cloudflare Worker project named `simple-agent` in the current directory using default settings (including TypeScript and the "Hello World" template) without interactive prompts (`--yes`).
+3.  **[Integrating Cloudflare AI](./03-ai-integration.md)**
+    -   Adding the AI binding in `wrangler.jsonc`.
+    -   Updating worker code to call an AI model.
 
-**Result:**
-The command successfully created the project structure, installed necessary dependencies (like `wrangler` and `@cloudflare/workers-types`), and configured basic files like `package.json` and `tsconfig.json`. The output confirmed the successful creation and provided instructions for development (`npm run start`) and deployment (`npm run deploy`).
+4.  **[Building the API Endpoint](./04-api-endpoint.md)**
+    -   Creating the `/api` route.
+    -   Handling `prompt` query parameters.
+    -   Processing and returning AI responses.
 
-## 2. Configure `wrangler.jsonc`
+5.  **[Implementing IP Restriction](./05-ip-restriction.md)**
+    -   Using Worker Secrets to store allowed IP addresses (`ALLOWED_IPS`).
+    -   Adding code to check the client IP address.
 
-**Action:**
-Edited the `wrangler.jsonc` file within the `simple-agent` project.
+6.  **[Implementing API Key Authentication](./06-api-key-auth.md)**
+    -   Using Worker Secrets to store an API key (`API_KEY`).
+    -   Adding code to validate the `x-api-key` header.
 
-**Change:**
-Added the `ai` binding to enable Cloudflare AI and ensured the `assets` binding for static files was present.
+7.  **[Implementing Rate Limiting](./07-rate-limiting.md)**
+    -   Creating and configuring a KV Namespace (`RATE_LIMIT_STORE`).
+    -   Adding code to track requests per IP using KV.
+    -   Returning `429 Too Many Requests` responses and rate limit headers.
 
-```jsonc
-// ... other config ...
-	"assets": {
-		"binding": "ASSETS",
-		"directory": "./public"
-	},
-	"observability": {
-		"enabled": true
-	},
-	"ai": {
-		"binding": "AI"
-	}
-// ... rest of config ...
-```
+8.  **[Local Development and Testing](./08-local-dev-testing.md)**
+    -   Using `wrangler dev` to run the worker locally.
+    -   Strategies for testing with secrets (`.dev.vars`).
+    -   Testing static assets, API functionality, IP restriction, API key auth, and rate limiting locally.
 
-**Result:**
-The configuration file was updated successfully, linking the `AI` binding in the code to the Cloudflare AI service and the `ASSETS` binding to the `./public` directory.
+9.  **[Deployment](./09-deployment.md)**
+    -   Prerequisites for deployment (credentials, secrets, KV).
+    -   Running `wrangler deploy`.
+    -   Post-deployment verification.
+    -   Common deployment troubleshooting tips.
 
-## 3. Create Static HTML (`public/index.html`)
+## Additional Notes
 
-**Action:**
-Created the `public/index.html` file within the `simple-agent` project.
+-   **[Wrangler Tips](./wrangler.md):** General observations and tips for working with Wrangler CLI.
+-   **[Project Knowledge](./knowledge.md):** Other project-specific context and learnings.
 
-**Content:**
-A simple HTML page serving as the static landing page for the root URL. It includes a title, basic styling, and a link demonstrating how to use the `/api` endpoint.
+---
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>Simple Agent</title>
-		<style>
-			body {
-				font-family: sans-serif;
-				padding: 2em;
-			}
-		</style>
-	</head>
-	<body>
-		<h1>Simple AI Agent</h1>
-		<p>This is the static landing page.</p>
-		<p>To use the AI agent, access the <code>/api</code> endpoint with a prompt parameter, like:</p>
-		<p><a href="/api?prompt=Hello">/api?prompt=Hello</a></p>
-	</body>
-</html>
-```
-
-**Result:**
-The file was created successfully, replacing the default template's `index.html`.
-
-## 4. Update Worker Code (`src/index.ts`)
-
-**Action:**
-Edited the `src/index.ts` file within the `simple-agent` project.
-
-**Change:**
-Replaced the default "Hello World" fetch handler with new logic:
-
-- Defined the `Env` interface with `AI` and `ASSETS` bindings.
-- Implemented routing:
-  - Requests to `/api` extract the `prompt` query parameter, call the AI model (`@cf/mistral/mistral-7b-instruct-v0.1`), and return the text response. Includes error handling for missing prompts and AI failures. Uses a type assertion (`as { response: string }`) for the non-streaming AI response.
-  - All other requests are forwarded to the `ASSETS` binding to serve static files from the `./public` directory.
-- Added console logging for debugging.
-
-**Result:**
-The worker code was updated to provide the desired API and static file serving functionality.
-
-## 5. Generate Type Definitions
-
-**Command:**
-
-```bash
-# Run from within the simple-agent project directory
-npx wrangler@latest types | cat
-```
-
-**Explanation:**
-This command regenerates TypeScript type definitions based on the current `wrangler.jsonc` configuration, ensuring types for bindings like `AI` and `ASSETS` are available in `src/index.ts`. The `| cat` pipes the output to avoid interactive pagers.
-
-**Result:**
-The command successfully generated types into `worker-configuration.d.ts`. It noted actions required regarding `@cloudflare/workers-types` and `@types/node`, but these were deemed non-critical for proceeding.
-
-## 6. Start Development Server
-
-**Command:**
-
-```bash
-# Run from within the simple-agent project directory
-npm run dev | cat
-```
-
-**Explanation:**
-Starts the local development server using `wrangler dev`. The `| cat` pipes the output.
-
-**Result:**
-The server started successfully. **Crucially, the output was checked**, confirming it was **`Ready on http://localhost:8787`** and noting the AI binding was connected and the warning about potential charges for AI usage during local development. No startup errors were observed this time.
-
-## 7. Verify Root Endpoint (`/`)
-
-**Action:**
-Navigated the browser tool to `http://localhost:8787/`.
-
-**Result:**
-Navigation was successful. The browser rendered the content of `public/index.html`, confirming the static asset serving was working correctly.
-
-## 8. Verify API Endpoint (`/api`)
-
-**Action:**
-Navigated the browser tool to `http://localhost:8787/api?prompt=Test`.
-
-**Result:**
-Navigation was successful. The browser displayed the text response generated by the AI model for the "Test" prompt, confirming the `/api` route and AI integration were working correctly.
+*Navigate back to the main [User Quick Start](../README.md).*
