@@ -36,4 +36,7 @@ To deploy the worker to your Cloudflare account:
 npm run deploy
 ```
 
-This will build and publish the worker based on your `wrangler.jsonc` configuration. 
+This will build and publish the worker based on your `wrangler.jsonc` configuration.
+
+## CI/CD Test
+This line was added to test the CI/CD pipeline and secret configuration. 
