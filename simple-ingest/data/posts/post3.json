@@ -1,0 +1,31 @@
+{
+  "id": "post_003",
+  "timestamp": "2025-04-16T23:00:00Z",
+  "author": {
+    "id": "user_789",
+    "username": "cloudmaster",
+    "avatar": "https://placekitten.com/102/102"
+  },
+  "content": {
+    "text": "Just launched a new AI-powered Cloudflare Worker! Here's a thread on performance optimization tips... 🚀 #AI #Performance",
+    "media": [
+      {
+        "type": "image",
+        "url": "performance-graph.jpg",
+        "caption": "Performance metrics before and after optimization"
+      },
+      {
+        "type": "video",
+        "url": "optimization-demo.mp4",
+        "duration": "1:30",
+        "thumbnail": "optimization-thumb.jpg"
+      }
+    ]
+  },
+  "stats": {
+    "likes": 245,
+    "shares": 56,
+    "comments": 34
+  },
+  "tags": ["AI", "Performance", "CloudflareWorkers", "Tutorial"]
+} 

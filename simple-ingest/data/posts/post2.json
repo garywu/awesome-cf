@@ -1,0 +1,26 @@
+{
+  "id": "post_002",
+  "timestamp": "2025-04-16T22:30:00Z",
+  "author": {
+    "id": "user_456",
+    "username": "devguru",
+    "avatar": "https://placekitten.com/101/101"
+  },
+  "content": {
+    "text": "Check out this quick tutorial on setting up rate limiting in Cloudflare Workers! 📹 #Tutorial #Security",
+    "media": [
+      {
+        "type": "video",
+        "url": "rate-limit-tutorial.mp4",
+        "duration": "2:15",
+        "thumbnail": "tutorial-thumb.jpg"
+      }
+    ]
+  },
+  "stats": {
+    "likes": 128,
+    "shares": 24,
+    "comments": 12
+  },
+  "tags": ["Tutorial", "Security", "CloudflareWorkers"]
+} 

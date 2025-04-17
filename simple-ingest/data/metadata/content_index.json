@@ -1,0 +1,26 @@
+{
+  "last_updated": "2025-04-16T22:45:00Z",
+  "total_items": 4,
+  "content_types": {
+    "posts": {
+      "count": 2,
+      "items": ["post_001", "post_002"]
+    },
+    "images": {
+      "count": 1,
+      "items": ["deploy-screenshot.jpg"]
+    },
+    "videos": {
+      "count": 1,
+      "items": ["rate-limit-tutorial.mp4"]
+    }
+  },
+  "tags": {
+    "CloudflareWorker": 1,
+    "WebDev": 1,
+    "CloudComputing": 1,
+    "Tutorial": 1,
+    "Security": 1,
+    "CloudflareWorkers": 1
+  }
+} 

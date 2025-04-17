@@ -1,0 +1,25 @@
+{
+  "id": "post_001",
+  "timestamp": "2025-04-16T22:15:00Z",
+  "author": {
+    "id": "user_123",
+    "username": "techexplorer",
+    "avatar": "https://placekitten.com/100/100"
+  },
+  "content": {
+    "text": "Just deployed my first #CloudflareWorker! The possibilities are endless. 🚀 #WebDev #CloudComputing",
+    "media": [
+      {
+        "type": "image",
+        "url": "deploy-screenshot.jpg",
+        "caption": "Successful deployment screenshot"
+      }
+    ]
+  },
+  "stats": {
+    "likes": 42,
+    "shares": 7,
+    "comments": 3
+  },
+  "tags": ["CloudflareWorker", "WebDev", "CloudComputing"]
+} 
