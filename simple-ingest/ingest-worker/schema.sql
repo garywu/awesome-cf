@@ -17,4 +17,30 @@ CREATE TABLE ingested_items (
 -- Optional: Create indexes for faster querying based on common lookup fields
 -- CREATE INDEX IF NOT EXISTS idx_ingested_items_source ON ingested_items(source);
 -- CREATE INDEX IF NOT EXISTS idx_ingested_items_content_type ON ingested_items(content_type);
--- CREATE INDEX IF NOT EXISTS idx_ingested_items_ingested_at ON ingested_items(ingested_at); 
+-- CREATE INDEX IF NOT EXISTS idx_ingested_items_ingested_at ON ingested_items(ingested_at);
+
+-- Create the uploads table
+CREATE TABLE IF NOT EXISTS uploads (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    key TEXT NOT NULL,
+    type TEXT,
+    size INTEGER,
+    source TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    id TEXT PRIMARY KEY,
+    author_id TEXT NOT NULL,
+    author_username TEXT NOT NULL,
+    content TEXT NOT NULL,
+    timestamp TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS post_tags (
+    post_id TEXT NOT NULL,
+    tag TEXT NOT NULL,
+    PRIMARY KEY (post_id, tag),
+    FOREIGN KEY (post_id) REFERENCES posts(id)
+); 

@@ -1,0 +1,12 @@
+{
+  "id": "post123",
+  "author": {
+    "id": "user123",
+    "username": "testuser"
+  },
+  "content": {
+    "text": "Hello from test upload"
+  },
+  "timestamp": "2024-03-21T12:00:00Z",
+  "tags": ["test"]
+} 

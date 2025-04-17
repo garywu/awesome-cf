@@ -4,9 +4,9 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "ingest-worker",
+	"name": "simple-ingest-worker",
 	"main": "src/index.ts",
-	"compatibility_date": "2025-04-16",
+	"compatibility_date": "2024-03-20",
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
@@ -20,8 +20,21 @@
 	"kv_namespaces": [
 		{
 			"binding": "RATE_LIMIT_STORE",
-			"id": "d62880029f274cb8854dc0b6acaa5fe4",
-			"preview_id": "9ffd2fd43ec44504b960e398fa7a7072"
+			"id": "d62880029f274cb8854dc0b6acaa5fe4"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "STORAGE",
+			"bucket_name": "simple-ingest-storage",
+			"preview_bucket_name": "simple-ingest-storage-preview"
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "simple-ingest-db",
+			"database_id": "35267b22-6394-4661-a65b-a669a4265766"
 		}
 	]
 	/**
